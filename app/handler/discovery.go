@@ -8,6 +8,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type DiscoveryUser struct {
+	ID     uint   `json:"id"`
+	Name   string `json:"name"`
+	Gender string `json:"gender"`
+	Age    int    `json:"age"`
+}
+
 func (h *Handler) Discovery(ctx echo.Context) error {
 	userId, err := GetUserIDPathParam(ctx)
 	if err != nil {
@@ -22,7 +29,21 @@ func (h *Handler) Discovery(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "discovery", err.Error()))
 	}
 
-	return ctx.JSON(http.StatusOK, CollectionResponse[store.User]{
-		Results: response.Users,
+	apiResponse := []DiscoveryUser{}
+	for _, user := range response.Users {
+		apiResponse = append(apiResponse, mapUserToDiscoveryUser(&user))
+	}
+
+	return ctx.JSON(http.StatusOK, CollectionResponse[DiscoveryUser]{
+		Results: apiResponse,
 	})
+}
+
+func mapUserToDiscoveryUser(user *store.User) DiscoveryUser {
+	return DiscoveryUser{
+		ID:     user.ID,
+		Name:   user.Name,
+		Gender: user.Gender,
+		Age:    user.Age,
+	}
 }

@@ -96,7 +96,7 @@ func handleAuthMiddleware(auth *auth.Auth, next echo.HandlerFunc) echo.HandlerFu
 
 		token, err := auth.VerifyToken(modifiedString)
 		if err != nil {
-			return errors.New("")
+			return err
 		}
 
 		userId, err := handler.GetUserIDPathParam(c)
