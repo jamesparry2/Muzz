@@ -76,12 +76,10 @@ func setupNonAuthRoutes(server *echo.Echo, handlers *handler.Handler) {
 }
 
 func setupAuthRoutes(server *echo.Group, handlers *handler.Handler) {
-	// To add
 	server.POST("user/:id/swipe", handlers.Swipe)
 	server.GET("user/:id/discovery", handlers.Discovery)
 	server.POST("user/:id/preference", handlers.Preference)
-
-	server.POST("user/:id/location", func(c echo.Context) error { return nil })
+	server.POST("user/:id/location", handlers.Location)
 }
 
 // Tidy this up tomorrow
