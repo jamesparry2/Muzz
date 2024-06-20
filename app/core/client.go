@@ -13,6 +13,7 @@ type CoreIface interface {
 	Swipe(ctx context.Context, request *SwipeRequest) (*SwipeResponse, error)
 	Discovery(ctx context.Context, request *DiscoveryRequest) (*DiscoveryResponse, error)
 	Preference(ctx context.Context, request *PreferenceRequest) error
+	Location(ctx context.Context, request *LocationRequest) error
 }
 
 type ClientOptions struct {

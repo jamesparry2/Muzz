@@ -17,7 +17,7 @@ type PreferenceRequest struct {
 func (h *Handler) Preference(ctx echo.Context) error {
 	userId, err := GetUserIDPathParam(ctx)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, NewAPIError(http.StatusBadRequest, "discovery", err.Error()))
+		return ctx.JSON(http.StatusBadRequest, NewAPIError(http.StatusBadRequest, "preference", err.Error()))
 	}
 
 	preferenceRequest := PreferenceRequest{}
