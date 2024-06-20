@@ -24,7 +24,6 @@ func (h *Handler) Discovery(ctx echo.Context) error {
 	response, err := h.core.Discovery(ctx.Request().Context(), &core.DiscoveryRequest{
 		UserID: userId,
 	})
-
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "discovery", err.Error()))
 	}
