@@ -56,7 +56,7 @@ func TestDiscovery(t *testing.T) {
 		}
 	})
 
-	t.Run("should return the newly created user on success", func(t *testing.T) {
+	t.Run("should return the found users on success", func(t *testing.T) {
 		rec := httptest.NewRecorder()
 		req := httptest.NewRequest(http.MethodPost, "/", nil)
 		c := echo.New().NewContext(req, rec)
