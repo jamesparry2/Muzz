@@ -69,5 +69,4 @@ type StoreIface interface {
 	FindAllUsers(ctx context.Context, user *User) ([]User, error)
 	// UpsertLocation(ctx context.Context, request *LocationDTO) error
 	// UpsertPreferences(ctx context.Context, request *PreferencesDTO) error
-	// UpsertMatches(ctx context.Context, request *MatchesDTO)
 }

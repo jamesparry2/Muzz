@@ -13,7 +13,17 @@ func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.Us
 	// - own user
 	// - any user that this user has already swipped on (no need to consider responded swipes)
 
-	result := c.db.Find(&users)
+	query := c.db.Where("id != ?", user.ID)
+	if len(user.Swipes) != 0 {
+		swippedIds := []uint{}
+		for _, swipped := range user.Swipes {
+			swippedIds = append(swippedIds, swipped.ID)
+		}
+
+		query.Where("id NOT IN (?)", swippedIds)
+	}
+
+	result := query.Find(&users)
 	if result.Error != nil {
 		return users, result.Error
 	}
