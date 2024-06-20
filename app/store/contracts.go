@@ -41,8 +41,9 @@ type User struct {
 
 type Location struct {
 	gorm.Model
-	Lat  string
-	Long string
+	Lat            float64
+	Long           float64
+	DistanceFromMe int
 
 	UserID uint
 }

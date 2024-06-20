@@ -9,9 +9,9 @@ import (
 )
 
 type LocationRequest struct {
-	Lat            int `json:"lat"`
-	Long           int `json:"long"`
-	DistanceFromMe int `json:"distance_from_me"`
+	Lat            float64 `json:"lat"`
+	Long           float64 `json:"long"`
+	DistanceFromMe int     `json:"distance_from_me"`
 }
 
 func (h *Handler) Location(ctx echo.Context) error {
