@@ -31,8 +31,9 @@ func (h *Handler) CreateUser(ctx echo.Context) error {
 		})
 
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, err)
+		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "create_user", err.Error()))
 	}
 
+	// Need to create a mapper to confirm to the seperation
 	return ctx.JSON(http.StatusCreated, SingleResponse{Result: response})
 }
