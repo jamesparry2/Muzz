@@ -21,7 +21,7 @@ type LoginResponse struct {
 func (h *Handler) Login(ctx echo.Context) error {
 	body := LoginRequest{}
 	if err := json.NewDecoder(ctx.Request().Body).Decode(&body); err != nil {
-		return ctx.JSON(http.StatusBadRequest, NewAPIError(http.StatusBadRequest, "login", "invalid request body sent"))
+		return ctx.JSON(http.StatusBadRequest, NewAPIError(http.StatusBadRequest, "login", "invalid body request sent"))
 	}
 
 	// Add some base validation, such as min lengths

@@ -20,11 +20,10 @@ func TestSwipe(t *testing.T) {
 
 	t.Run("should return an error when an invalid request body is sent", func(t *testing.T) {
 		rec := httptest.NewRecorder()
-		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/", nil), rec)
+		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/user/:id/swipe", nil), rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{})
 
-		// Random new line needed because Echo is adding a new line in the body response??
 		expectedBody := `{"message":"invalid body request sent","is_retryable":true,"code":"swipe"}
 `
 
@@ -37,7 +36,7 @@ func TestSwipe(t *testing.T) {
 	t.Run("should return an error when making a request without a id in the path", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(validJSON))
+		req := httptest.NewRequest(http.MethodPost, "/user/:id/swipe", strings.NewReader(validJSON))
 		c := echo.New().NewContext(req, rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{})
@@ -54,7 +53,7 @@ func TestSwipe(t *testing.T) {
 	t.Run("should return an error when the swipe fails to process the request", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(validJSON))
+		req := httptest.NewRequest(http.MethodPost, "/user/:id/swipe", strings.NewReader(validJSON))
 		c := echo.New().NewContext(req, rec)
 		c.SetParamNames("id")
 		c.SetParamValues("1")
@@ -79,7 +78,7 @@ func TestSwipe(t *testing.T) {
 	t.Run("should return a success response when the swipe has been processed", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(validJSON))
+		req := httptest.NewRequest(http.MethodPost, "/user/:id/swipe", strings.NewReader(validJSON))
 		c := echo.New().NewContext(req, rec)
 		c.SetParamNames("id")
 		c.SetParamValues("1")

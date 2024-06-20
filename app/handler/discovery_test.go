@@ -19,7 +19,7 @@ func TestDiscovery(t *testing.T) {
 	t.Run("should return an error when making a request without a id in the path", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", nil)
+		req := httptest.NewRequest(http.MethodGet, "/user/:id/discovery", nil)
 		c := echo.New().NewContext(req, rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{})
@@ -36,7 +36,7 @@ func TestDiscovery(t *testing.T) {
 	t.Run("should return an error when attempting to find new users to match with", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", nil)
+		req := httptest.NewRequest(http.MethodGet, "/user/:id/discovery", nil)
 		c := echo.New().NewContext(req, rec)
 		c.SetParamNames("id")
 		c.SetParamValues("1")
@@ -58,7 +58,7 @@ func TestDiscovery(t *testing.T) {
 
 	t.Run("should return the found users on success", func(t *testing.T) {
 		rec := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/", nil)
+		req := httptest.NewRequest(http.MethodGet, "/user/:id/discovery", nil)
 		c := echo.New().NewContext(req, rec)
 		c.SetParamNames("id")
 		c.SetParamValues("1")

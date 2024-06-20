@@ -19,7 +19,7 @@ func TestCreateUser(t *testing.T) {
 	t.Run("should return an error when making a request with a poorly formatted body", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/", nil), rec)
+		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/user/create", nil), rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{})
 
@@ -36,7 +36,7 @@ func TestCreateUser(t *testing.T) {
 	t.Run("should return an error when the user fails to create", func(t *testing.T) {
 		// Setup HTTP Handlers
 		rec := httptest.NewRecorder()
-		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/", strings.NewReader(`{ "email": "jamesparr2@gmail.com" }`)), rec)
+		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/user/create", strings.NewReader(`{ "email": "jamesparr2@gmail.com" }`)), rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{
 			Core: &mock.MockCore{
@@ -57,7 +57,7 @@ func TestCreateUser(t *testing.T) {
 
 	t.Run("should return the newly created user on success", func(t *testing.T) {
 		rec := httptest.NewRecorder()
-		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/", strings.NewReader(`{ "email": "jamesparr2@gmail.com" }`)), rec)
+		c := echo.New().NewContext(httptest.NewRequest(http.MethodPost, "/user/create", strings.NewReader(`{ "email": "jamesparr2@gmail.com" }`)), rec)
 
 		client := handler.NewHandler(&handler.HandlerOption{
 			Core: &mock.MockCore{
