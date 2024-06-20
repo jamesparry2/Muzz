@@ -12,6 +12,7 @@ type CoreIface interface {
 	Login(ctx context.Context, request *LoginRequest) (*LoginResponse, error)
 	Swipe(ctx context.Context, request *SwipeRequest) (*SwipeResponse, error)
 	Discovery(ctx context.Context, request *DiscoveryRequest) (*DiscoveryResponse, error)
+	Preference(ctx context.Context, request *PreferenceRequest) error
 }
 
 type ClientOptions struct {

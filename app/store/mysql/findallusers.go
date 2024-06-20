@@ -9,10 +9,6 @@ import (
 func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.User, error) {
 	users := []store.User{}
 
-	// Filter out the following:
-	// - own user
-	// - any user that this user has already swipped on (no need to consider responded swipes)
-
 	query := c.db.Where("id != ?", user.ID)
 	if len(user.Swipes) != 0 {
 		swippedIds := []uint{}
@@ -21,6 +17,16 @@ func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.Us
 		}
 
 		query.Where("id NOT IN (?)", swippedIds)
+	}
+
+	if user.Preferences != nil {
+		if user.Preferences.Gender != "" {
+			query.Where("gender = ?", user.Preferences.Gender)
+		}
+
+		if user.Preferences.MinimumAge >= 18 && user.Preferences.MaximumAge >= 19 {
+			query.Where("age BETWEEN ? AND ?", user.Preferences.MinimumAge, user.Preferences.MaximumAge)
+		}
 	}
 
 	result := query.Find(&users)

@@ -7,11 +7,12 @@ import (
 )
 
 type MockStore struct {
-	MockUpsertUser  func(ctx context.Context, request *store.User) error
-	MockFindUser    func(ctx context.Context, user *store.User, conditions map[string]interface{}) error
-	MockUpsertSwipe func(ctx context.Context, swipe *store.Swipe) error
-	MockHasMatched  func(ctx context.Context, userID, matchedID uint) (bool, error)
-	MockFindAllUser func(ctx context.Context, user *store.User) ([]store.User, error)
+	MockUpsertUser        func(ctx context.Context, request *store.User) error
+	MockFindUser          func(ctx context.Context, user *store.User, conditions map[string]interface{}) error
+	MockUpsertSwipe       func(ctx context.Context, swipe *store.Swipe) error
+	MockHasMatched        func(ctx context.Context, userID, matchedID uint) (bool, error)
+	MockFindAllUser       func(ctx context.Context, user *store.User) ([]store.User, error)
+	MockUpsertPreferences func(ctx context.Context, preference *store.Preferences) error
 }
 
 func (ms *MockStore) UpsertUser(ctx context.Context, request *store.User) error {
@@ -32,4 +33,8 @@ func (ms *MockStore) HasMatched(ctx context.Context, userId, matchedId uint) (bo
 
 func (ms *MockStore) FindAllUsers(ctx context.Context, user *store.User) ([]store.User, error) {
 	return ms.MockFindAllUser(ctx, user)
+}
+
+func (ms *MockStore) UpsertPreferences(ctx context.Context, preference *store.Preferences) error {
+	return ms.MockUpsertPreferences(ctx, preference)
 }

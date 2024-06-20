@@ -20,6 +20,9 @@ var (
 	ErrUpsertSwipeDBError      = errors.New("failed to save swipe to the DB")
 
 	ErrHasMatchedMissingIDs = errors.New("missing ids to verify if matched")
+
+	ErrUpsertPreferencesMissing = errors.New("missing preference details to upsert")
+	ErrUpsertPreferenceDBError  = errors.New("failed to save preference to the DB")
 )
 
 type User struct {
@@ -67,6 +70,4 @@ type StoreIface interface {
 	UpsertSwipe(ctx context.Context, swipe *Swipe) error
 	HasMatched(ctx context.Context, userID, matchedID uint) (bool, error)
 	FindAllUsers(ctx context.Context, user *User) ([]User, error)
-	// UpsertLocation(ctx context.Context, request *LocationDTO) error
-	// UpsertPreferences(ctx context.Context, request *PreferencesDTO) error
 }

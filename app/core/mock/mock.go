@@ -11,6 +11,7 @@ type MockCore struct {
 	MockLogin      func(ctx context.Context, request *core.LoginRequest) (*core.LoginResponse, error)
 	MockSwipe      func(ctx context.Context, request *core.SwipeRequest) (*core.SwipeResponse, error)
 	MockDiscovery  func(ctx context.Context, request *core.DiscoveryRequest) (*core.DiscoveryResponse, error)
+	MockPreference func(ctx context.Context, request *core.PreferenceRequest) error
 }
 
 func (mc *MockCore) CreateUser(ctx context.Context, request *core.CreateUserRequest) (*core.CreateUserResponse, error) {
@@ -27,4 +28,8 @@ func (mc *MockCore) Swipe(ctx context.Context, request *core.SwipeRequest) (*cor
 
 func (mc *MockCore) Discovery(ctx context.Context, request *core.DiscoveryRequest) (*core.DiscoveryResponse, error) {
 	return mc.MockDiscovery(ctx, request)
+}
+
+func (mc *MockCore) Preference(ctx context.Context, request *core.PreferenceRequest) error {
+	return mc.MockPreference(ctx, request)
 }
