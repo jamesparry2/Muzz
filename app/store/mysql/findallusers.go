@@ -7,12 +7,16 @@ import (
 )
 
 /*
-SELECT *
-FROM muzz.users as users
-INNER JOIN muzz.locations as location
-ON location.user_id = users.id
-WHERE (SELECT ST_Distance_Sphere(point ('51.601151', '-3.3499'), point(location.lat, `long`)) * .000621371192) <= location.distance_from_me
-AND users.id != 1 AND users.id NOT IN (2) AND users.gender = 'male' AND (users.age BETWEEN 25 AND 30);
+SELECT users.id, users.name, users.password, users.gender, users.age, ST_Distance_Sphere(point (51.601151, -3.3499), point(lat, `long`)) * .000621371192 as distance_from_me
+FROM `users`
+INNER JOIN `locations` `Location`
+ON `users`.`id` = `Location`.`user_id` AND `Location`.`deleted_at` IS NULL
+WHERE users.id != 1
+AND users.id NOT IN (2)
+AND users.gender = 'male'
+AND (users.age BETWEEN 25 AND 30)
+AND `users`.`deleted_at` IS NULL
+ORDER BY distance_from_me DESC
 */
 func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.User, error) {
 	users := []store.User{}
