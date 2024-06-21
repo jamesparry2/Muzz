@@ -27,11 +27,12 @@ var (
 
 type User struct {
 	gorm.Model
-	Email    string
-	Password string
-	Name     string
-	Gender   string
-	Age      int
+	Email          string
+	Password       string
+	Name           string
+	Gender         string
+	Age            int
+	DistanceFromMe float64 `gorm:"-"`
 
 	Location    *Location
 	Preferences *Preferences
@@ -41,9 +42,8 @@ type User struct {
 
 type Location struct {
 	gorm.Model
-	Lat            float64
-	Long           float64
-	DistanceFromMe int
+	Lat  float64
+	Long float64
 
 	UserID uint
 }

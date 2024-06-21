@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jamesparry2/Muzz/app/store"
 )
@@ -39,14 +38,11 @@ func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.Us
 	}
 
 	if user.Location != nil {
-		// Gorm doesn't seem to play well ST_Distance_Sphere, so formating using DB values with floats, if this was strings this should not be done
-		query.InnerJoins("Location").Where("@query <= @distance_from_me", map[string]interface{}{
-			"query":            fmt.Sprintf("ST_Distance_Sphere(point ('%f', '%f'), point(lat, `long`)) * .000621371192", user.Location.Lat, user.Location.Long),
-			"distance_from_me": user.Location.DistanceFromMe,
-		})
+		query.InnerJoins("Location").Select("users.id, users.name, users.password, users.gender, users.age, ST_Distance_Sphere(point (?, ?), point(lat, `long`)) * .000621371192 as distance_from_me", user.Location.Lat, user.Location.Long).Order("distance_from_me DESC")
 	}
 
-	result := query.Find(&users)
+	// Just need to map distance in
+	result := query.Debug().Find(&users)
 	if result.Error != nil {
 		return users, result.Error
 	}

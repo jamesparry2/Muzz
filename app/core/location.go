@@ -31,9 +31,8 @@ func (c *Client) Location(ctx context.Context, request *LocationRequest) error {
 	}
 
 	user.Location = &store.Location{
-		Lat:            request.Lat,
-		Long:           request.Long,
-		DistanceFromMe: request.DistanceFromMe,
+		Lat:  request.Lat,
+		Long: request.Long,
 	}
 
 	if err := c.store.UpsertUser(ctx, &user); err != nil {
