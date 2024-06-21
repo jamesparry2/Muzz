@@ -4,7 +4,6 @@ go 1.22.4
 
 require (
 	github.com/caarlos0/env/v11 v11.0.1
-	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/stretchr/testify v1.8.4

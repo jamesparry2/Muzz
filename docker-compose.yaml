@@ -3,6 +3,8 @@ version: '3.3'
 services:
   db:
     image: mysql:latest
+    networks:
+      - fullstack
     restart: always
     environment:
       - MYSQL_DATABASE=muzz
@@ -15,6 +17,27 @@ services:
       - '3306'
     volumes:
       - db:/var/lib/mysql
+  api:
+    image: muzz-api:local
+    networks:
+      - fullstack
+    restart: always
+    environment:
+      - API_PORT=:5001
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=admin
+      - DB_PASSWORD=supersecure
+      - DB_NAME=muzz
+      - AUTH_SECRET_KEY=supersecret
+    ports:
+      - '5001:5001'
+    expose:
+      - '5001'
+
+networks:
+ fullstack:
+    driver: bridge
 
 volumes:
   db:
