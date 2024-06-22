@@ -30,6 +30,20 @@ For running the application the assumption, outline in the document, is the user
 
 ### Project Structure
 
+The project follows a structure that supports the implementation of the ports and adapters pattern outlined within hexagonal architecture. Levearging Go interfaces allows the packages to be lossly coupled by contracts and allows multiple injectable packages. For example the store contract could allow a MYSQL package or a Dynamo Package to be injected. This allow mocks to be injected allowing each unit to be tested in isolation conforming to positive unit testing practices. 
+
+
+
+The project strucute is defined into the following:
+
+<b>app/auth</b> - This package is concerend about generating JWTs and any form of authentication within the application.
+
+<b>app/core</b> This package houses the main bussiness login and orchestrates the flows within these files.
+
+<b>app/handlers</b> This package is concerned with managing HTTP inbound and outbound concerns and ensuring the input into core is expected.
+
+<b>app/store</b> This package acts as the datalayer between the project and the external data management tool that the project deems suitable to use.
+
 ### Database Decision and ORM
 
 For the database its been built against SQL primiarly to leverage the relational structure of the data that was being stored as the relationship can be mapped to one is many and vice vera such as a User can have many swipes but a swipe must belong to a single user.
