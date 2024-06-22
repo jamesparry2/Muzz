@@ -1,8 +1,9 @@
 # Muzz
 
-The Muzz API is a minature api that is designed to handle the managament of users and provide a public interface for a consuming application to use to coordiante discovery of new users for a user to match with, and provide the user the opportunity to match with other users.
+The Muzz API is a miniature API that is designed to handle the management of users and provide a public interface for a consuming application to use to coordinate discovery of new users for a user to match with and provide the user the opportunity to match with other users.
 
-Below will be subsections denoting the requested functionality, the assumptions that were made that led to technical decisions and how the assumptions impacted the final endpoints. Also will be some setup steps on how to run the API locally, for manual verification of the endpoints. 
+Below will be subsections denoting the requested functionality, the assumptions that were made that led to technical decisions and how the assumptions impacted the final endpoints. Also, will be some setup steps on how to run the API locally, for manual verification of the endpoints.
+
 
 ## Feature Requests
 - [x] Allow the ability to create users
@@ -11,14 +12,14 @@ Below will be subsections denoting the requested functionality, the assumptions 
 - [x] Allow users to swipe and potentially match with others
 - [x] Allow users to filter discoveries based on age and gender
 - [x] Order the results based on distance to the users
-- [ ] Bonus: Apply a secondary order filter based on attractives
+- [ ] Bonus: Apply a secondary order filter based on attractiveness
 
 ## Assumptions made
-- For determining the distance, the assumption that the consumer would provide the lat and long of the users current location. This lead to a new location resource which would be a child of the user resource. 
+- For determining the distance, the assumption that the consumer would provide the lat and long of the users current location. This led to a new location resource which would be a child of the user resource. 
 - Regarding the variety of potential data integration options, the API would be built with the design of Ports/Adapters to allow easy switching of underlying technical stores. 
 
 ## Running the application locally
-For running the application the assumption, outline in the document, is the user will have docker installed. So using this I've built a docker compose file that will use the local image along with a DB container and handle the networking between the two. There will be two ways to achieve this depending on the users setup:
+For running the application the assumption, outline in the document, is the user will have docker installed. So, using this I've built a docker compose file that will use the local image along with a DB container and handle the networking between the two. There will be two ways to achieve this depending on the users setup:
 
 - 1 Within the root there is a Makefile with a command which handles building the image and tagging the local image, it will then run the docker-compose in detached mode to free up the terminal. `make setup_and_run_local`
 - 2 If the user does not have the 'Make' command installed, and do not wish to install it, they can follow the 3 commands to spin up the API: 
@@ -30,29 +31,27 @@ For running the application the assumption, outline in the document, is the user
 
 ### Project Structure
 
-The project follows a structure that supports the implementation of the ports and adapters pattern outlined within hexagonal architecture. Levearging Go interfaces allows the packages to be lossly coupled by contracts and allows multiple injectable packages. For example the store contract could allow a MYSQL package or a Dynamo Package to be injected. This allow mocks to be injected allowing each unit to be tested in isolation conforming to positive unit testing practices. 
+The project follows a structure that supports the implementation of the ports and adapters pattern outlined within hexagonal architecture. Leveraging Go interfaces allows the packages to be loosely coupled by contracts and allows multiple injectable packages. For example, the store contract could allow a MYSQL package or a Dynamo Package to be injected. This allow mocks to be injected allowing each unit to be tested in isolation conforming to positive unit testing practices. 
 
+The project structure is defined into the following:
 
+<b>app/auth</b> - This package is concerned about generating JWTs and any form of authentication within the application.
 
-The project strucute is defined into the following:
-
-<b>app/auth</b> - This package is concerend about generating JWTs and any form of authentication within the application.
-
-<b>app/core</b> This package houses the main bussiness login and orchestrates the flows within these files.
+<b>app/core</b> This package houses the main business login and orchestrates the flows within these files.
 
 <b>app/handlers</b> This package is concerned with managing HTTP inbound and outbound concerns and ensuring the input into core is expected.
 
-<b>app/store</b> This package acts as the datalayer between the project and the external data management tool that the project deems suitable to use.
+<b>app/store</b> This package acts as the data layer between the project and the external data management tool that the project deems suitable to use.
 
 ### Database Decision and ORM
 
-For the database its been built against SQL primiarly to leverage the relational structure of the data that was being stored as the relationship can be mapped to one is many and vice vera such as a User can have many swipes but a swipe must belong to a single user.
+For the database its been built against SQL primarily  to leverage the relational structure of the data that was being stored as the relationship can be mapped to one is many and vice vera such as a User can have many swipes but a swipe must belong to a single user.
 
-When deciding what DB Tool to use with this, it was decided to be MYSql to levearge the built in functionality that would support with the distancing query rather than trying to implement my own solution. The only drawback to useing the built in functionality is that, according to documentation, its not the most performant at scale but for this solution and use case it wouldn't be a problem.
+When deciding what DB Tool to use with this, it was decided to be MYSql to leverage the built in functionality that would support with the distancing query rather than trying to implement my own solution. The only drawback to using the built in functionality is that, according to documentation, its not the most performant at scale but for this solution and use case it wouldn't be a problem.
 
 For the ORM in Go, I went with GORM because it allowed for the following features to be used:
-- automigration for the table strucures and allowed a model first appraoch
+- automigration for the table structures and allowed a model first approach
 - data parameterization to attempt to limit any potential SQL Injection
-- Quicker startup due to it ease of setup
+- Quicker startup due to its ease of setup
 
-However there are some drawback, its automigration is a powerful tool but it only supports addiditve proccess so deletion and manual column changes are a challange.
+However, there are some drawback, its automigration is a powerful tool but it only supports additive processes so deletion and manual column changes are a challenge.
