@@ -1,0 +1,50 @@
+definitions:
+  handler.APIError:
+    properties:
+      code:
+        type: string
+      is_retryable:
+        type: boolean
+      message:
+        type: string
+    type: object
+  handler.CreateUserRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  handler.SingleResponse:
+    properties:
+      result: {}
+    type: object
+info:
+  contact: {}
+paths:
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: for Testing Purposes for Testing Purposes with a provided Email
+      parameters:
+      - description: email
+        in: body
+        name: CreateUserRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.SingleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+swagger: "2.0"

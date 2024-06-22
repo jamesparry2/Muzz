@@ -11,7 +11,11 @@ import (
 	"github.com/jamesparry2/Muzz/app/core"
 	"github.com/jamesparry2/Muzz/app/handler"
 	"github.com/jamesparry2/Muzz/app/store/mysql"
+	"github.com/jamesparry2/Muzz/docs"
+	_ "github.com/jamesparry2/Muzz/docs"
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	"github.com/swaggo/swag"
 )
 
 type Config struct {
@@ -31,6 +35,8 @@ func Run() {
 	if err := env.Parse(&cfg); err != nil {
 		os.Exit(1)
 	}
+
+	setupSwaggerDetails(docs.SwaggerInfo)
 
 	// Add custom env injection for 12 factor standard
 	store, err := mysql.NewClientWithConection(&mysql.ClientOptions{
@@ -73,6 +79,7 @@ func setupNonAuthRoutes(server *echo.Echo, handlers *handler.Handler) {
 	// Testing endpoint for creating a random user
 	server.POST("user/create", handlers.CreateUser)
 	server.POST("login", handlers.Login)
+	server.GET("swagger/*", echoSwagger.WrapHandler)
 }
 
 func setupAuthRoutes(server *echo.Group, handlers *handler.Handler) {
@@ -80,6 +87,15 @@ func setupAuthRoutes(server *echo.Group, handlers *handler.Handler) {
 	server.GET("user/:id/discovery", handlers.Discovery)
 	server.POST("user/:id/preference", handlers.Preference)
 	server.POST("user/:id/location", handlers.Location)
+}
+
+func setupSwaggerDetails(spec *swag.Spec) {
+	spec.Title = "Muzz Test API"
+	spec.Version = "1.0"
+	spec.Description = "This is a mini api that allows basic user creation, discovery and matching"
+	spec.Host = "localhost:5001"
+	spec.BasePath = "/"
+	spec.Schemes = []string{"http"}
 }
 
 // Tidy this up tomorrow

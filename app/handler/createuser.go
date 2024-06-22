@@ -8,11 +8,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Small struct to help create new users quickly for testing
 type CreateUserRequest struct {
 	Email string `json:"email"`
 }
 
+// @CreateUser Create User
+// @Description for Testing Purposes for Testing Purposes with a provided Email
+// @Accept json
+// @Produce json
+// @Param CreateUserRequest body CreateUserRequest true "email"
+// @Success 200 {object} SingleResponse
+// @Failure 400 {object} APIError
+// @Failure 500 {object} APIError
+// @Router /user/create [post]
 func (h *Handler) CreateUser(ctx echo.Context) error {
 	// Make this a randomizer
 	createUserRequest := CreateUserRequest{}
