@@ -12,7 +12,6 @@ import (
 	"github.com/jamesparry2/Muzz/app/handler"
 	"github.com/jamesparry2/Muzz/app/store/mysql"
 	"github.com/jamesparry2/Muzz/docs"
-	_ "github.com/jamesparry2/Muzz/docs"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 	"github.com/swaggo/swag"
