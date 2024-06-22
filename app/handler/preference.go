@@ -41,7 +41,7 @@ func (h *Handler) Preference(ctx echo.Context) error {
 		MinAge: preferenceRequest.MinAge,
 		Gender: preferenceRequest.Gender,
 	}); err != nil {
-		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "preference", "invalid body request sent"))
+		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "preference", err.Error()))
 	}
 
 	return ctx.JSON(http.StatusOK, nil)
