@@ -1,8 +1,8 @@
 package app
 
 import (
-	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 
@@ -98,33 +98,31 @@ func setupSwaggerDetails(spec *swag.Spec) {
 	spec.Schemes = []string{"http"}
 }
 
-// Tidy this up tomorrow
 func handleAuthMiddleware(auth *auth.Auth, next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get("Authorization")
 		if authHeader == "" {
-			return errors.New("")
+			return c.JSON(http.StatusUnauthorized, handler.NewAPIError(http.StatusUnauthorized, "auth", "no token provided"))
 		}
 
 		modifiedString := strings.Replace(authHeader, "Bearer ", "", 1)
-
 		token, err := auth.VerifyToken(modifiedString)
 		if err != nil {
-			return err
+			return c.JSON(http.StatusUnauthorized, handler.NewAPIError(http.StatusUnauthorized, "auth", err.Error()))
 		}
 
 		userId, err := handler.GetUserIDPathParam(c)
 		if err != nil {
-			return err
+			return c.JSON(http.StatusUnauthorized, handler.NewAPIError(http.StatusUnauthorized, "auth", err.Error()))
 		}
 
 		sub, err := token.Claims.GetSubject()
 		if err != nil {
-			return err
+			return c.JSON(http.StatusUnauthorized, handler.NewAPIError(http.StatusUnauthorized, "auth", err.Error()))
 		}
 
 		if sub != fmt.Sprint(userId) {
-			return errors.New("token not allowed to access this resource")
+			return c.JSON(http.StatusUnauthorized, handler.NewAPIError(http.StatusUnauthorized, "auth", "not allowed to access the requested resource"))
 		}
 
 		return next(c)
