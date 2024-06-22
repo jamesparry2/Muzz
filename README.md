@@ -14,9 +14,10 @@ Below will be subsections denoting the requested functionality, the assumptions 
 - [ ] Bonus: Apply a secondary order filter based on attractives
 
 ## Assumptions made
-TODO
+- For determining the distance, the assumption that the consumer would provide the lat and long of the users current location. This lead to a new location resource which would be a child of the user resource. 
+- Regarding the variety of potential data integration options, the API would be built with the design of Ports/Adapters to allow easy switching of underlying technical stores. 
 
-## Testing Locally
+## Running the application locally
 TODO 
 
 ## Technical Design Decisions
