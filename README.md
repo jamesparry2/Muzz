@@ -18,7 +18,13 @@ Below will be subsections denoting the requested functionality, the assumptions 
 - Regarding the variety of potential data integration options, the API would be built with the design of Ports/Adapters to allow easy switching of underlying technical stores. 
 
 ## Running the application locally
-TODO 
+For running the application the assumption, outline in the document, is the user will have docker installed. So using this I've built a docker compose file that will use the local image along with a DB container and handle the networking between the two. There will be two ways to achieve this depending on the users setup:
+
+- 1 Within the root there is a Makefile with a command which handles building the image and tagging the local image, it will then run the docker-compose in detached mode to free up the terminal. `make setup_and_run_local`
+- 2 If the user does not have the 'Make' command installed, and do not wish to install it, they can follow the 3 commands to spin up the API: 
+    `docker build --tag muzz-api .`
+	`docker tag muzz-api:latest muzz-api:local`
+	`docker-compose up -d`
 
 ## Technical Design Decisions
 ToDo
