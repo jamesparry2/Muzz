@@ -12,12 +12,16 @@ type CreateUserRequest struct {
 	Email string `json:"email"`
 }
 
+type APICreateUserResponse struct {
+	Result *core.CreateUserResponse `json:"result"`
+}
+
 // @CreateUser Create User
 // @Description for Testing Purposes for Testing Purposes with a provided Email
 // @Accept json
 // @Produce json
 // @Param CreateUserRequest body CreateUserRequest true "email"
-// @Success 200 {object} SingleResponse
+// @Success 200 {object} APICreateUserResponse
 // @Failure 400 {object} APIError
 // @Failure 500 {object} APIError
 // @Router /user/create [post]
@@ -43,5 +47,5 @@ func (h *Handler) CreateUser(ctx echo.Context) error {
 	}
 
 	// Need to create a mapper to confirm to the seperation
-	return ctx.JSON(http.StatusCreated, SingleResponse{Result: response})
+	return ctx.JSON(http.StatusCreated, APICreateUserResponse{Result: response})
 }

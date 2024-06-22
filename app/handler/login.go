@@ -18,6 +18,15 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+// @Login Login User
+// @Description Allows for a user to login and gain an access token to for usage against other endpoints
+// @Accept json
+// @Produce json
+// @Param LoginRequest body LoginRequest true "email password"
+// @Success 200 {object} LoginResponse
+// @Failure 400 {object} APIError
+// @Failure 500 {object} APIError
+// @Router /login [post]
 func (h *Handler) Login(ctx echo.Context) error {
 	body := LoginRequest{}
 	if err := json.NewDecoder(ctx.Request().Body).Decode(&body); err != nil {

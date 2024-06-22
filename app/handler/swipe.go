@@ -22,7 +22,7 @@ type APISwipeResponse struct {
 	Result SwipeResponse `json:"result"`
 }
 
-// @CreateUser Swipe User
+// @SwipeUser Swipe User
 // @Description Allows for a user to perform a swipe action for another user and determine if they want to match
 // @Accept json
 // @Produce json

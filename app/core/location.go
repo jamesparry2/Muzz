@@ -12,9 +12,8 @@ var (
 )
 
 type LocationRequest struct {
-	Lat            float64
-	Long           float64
-	DistanceFromMe int
+	Lat  float64
+	Long float64
 
 	UserID uint
 }

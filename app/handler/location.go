@@ -9,11 +9,20 @@ import (
 )
 
 type LocationRequest struct {
-	Lat            float64 `json:"lat"`
-	Long           float64 `json:"long"`
-	DistanceFromMe int     `json:"distance_from_me"`
+	Lat  float64 `json:"lat"`
+	Long float64 `json:"long"`
 }
 
+// @Location Set Location
+// @Description Allows for a user to set their current location to allow the dicovery to order results based on distance
+// @Accept json
+// @Produce json
+// @Param id path int  true  "User ID"
+// @Param LocationRequest body LocationRequest true "lat long"
+// @Success 200
+// @Failure 400 {object} APIError
+// @Failure 500 {object} APIError
+// @Router /user/{id}/location [post]
 func (h *Handler) Location(ctx echo.Context) error {
 	userId, err := GetUserIDPathParam(ctx)
 	if err != nil {
@@ -26,10 +35,9 @@ func (h *Handler) Location(ctx echo.Context) error {
 	}
 
 	if err := h.core.Location(ctx.Request().Context(), &core.LocationRequest{
-		UserID:         userId,
-		Lat:            locationRequest.Lat,
-		Long:           locationRequest.Long,
-		DistanceFromMe: locationRequest.DistanceFromMe,
+		UserID: userId,
+		Lat:    locationRequest.Lat,
+		Long:   locationRequest.Long,
 	}); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, NewAPIError(http.StatusInternalServerError, "location", err.Error()))
 	}

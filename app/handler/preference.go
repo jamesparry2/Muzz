@@ -14,6 +14,16 @@ type PreferenceRequest struct {
 	MinAge int    `json:"min_age"`
 }
 
+// @Preference Set Preference
+// @Description Allows for a user to filter discoveries by applying specfic preferences
+// @Accept json
+// @Produce json
+// @Param id path int  true  "User ID"
+// @Param PreferenceRequest body PreferenceRequest true "gender max_age min_age"
+// @Success 200
+// @Failure 400 {object} APIError
+// @Failure 500 {object} APIError
+// @Router /user/{id}/preference [post]
 func (h *Handler) Preference(ctx echo.Context) error {
 	userId, err := GetUserIDPathParam(ctx)
 	if err != nil {

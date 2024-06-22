@@ -16,14 +16,6 @@ type Handler struct {
 	core core.CoreIface
 }
 
-type SingleResponse struct {
-	Result any `json:"result"`
-}
-
-type CollectionResponse[T any] struct {
-	Results []T `json:"results"`
-}
-
 type APIError struct {
 	Message     string `json:"message"`
 	IsRetryable bool   `json:"is_retryable"`

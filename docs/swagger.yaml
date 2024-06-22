@@ -1,4 +1,31 @@
 definitions:
+  core.CreateUserResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.APICreateUserResponse:
+    properties:
+      result:
+        $ref: '#/definitions/core.CreateUserResponse'
+    type: object
+  handler.APIDiscoveryResponse:
+    properties:
+      results:
+        items:
+          $ref: '#/definitions/handler.DiscoveryUser'
+        type: array
+    type: object
   handler.APIError:
     properties:
       code:
@@ -18,9 +45,46 @@ definitions:
       email:
         type: string
     type: object
-  handler.SingleResponse:
+  handler.DiscoveryUser:
     properties:
-      result: {}
+      age:
+        type: integer
+      distance_from_me:
+        type: number
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  handler.LocationRequest:
+    properties:
+      lat:
+        type: number
+      long:
+        type: number
+    type: object
+  handler.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  handler.PreferenceRequest:
+    properties:
+      gender:
+        type: string
+      max_age:
+        type: integer
+      min_age:
+        type: integer
     type: object
   handler.SwipeRequest:
     properties:
@@ -39,6 +103,115 @@ definitions:
 info:
   contact: {}
 paths:
+  /discovery:
+    get:
+      consumes:
+      - application/json
+      description: To allow users to find potential matches to swipe on
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.APIDiscoveryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Allows for a user to login and gain an access token to for usage
+        against other endpoints
+      parameters:
+      - description: email password
+        in: body
+        name: LoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+  /user/{id}/location:
+    post:
+      consumes:
+      - application/json
+      description: Allows for a user to set their current location to allow the dicovery
+        to order results based on distance
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: lat long
+        in: body
+        name: LocationRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LocationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
+  /user/{id}/preference:
+    post:
+      consumes:
+      - application/json
+      description: Allows for a user to filter discoveries by applying specfic preferences
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: gender max_age min_age
+        in: body
+        name: PreferenceRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PreferenceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
   /user/{id}/swipe:
     post:
       consumes:
@@ -90,7 +263,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.SingleResponse'
+            $ref: '#/definitions/handler.APICreateUserResponse'
         "400":
           description: Bad Request
           schema:
