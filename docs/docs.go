@@ -56,6 +56,55 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/{id}/swipe": {
+            "post": {
+                "description": "Allows for a user to perform a swipe action for another user and determine if they want to match",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "matched_id is_desired",
+                        "name": "SwipeRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.SwipeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APISwipeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.APIError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -73,6 +122,14 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.APISwipeResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "$ref": "#/definitions/handler.SwipeResponse"
+                }
+            }
+        },
         "handler.CreateUserRequest": {
             "type": "object",
             "properties": {
@@ -85,6 +142,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "result": {}
+            }
+        },
+        "handler.SwipeRequest": {
+            "type": "object",
+            "properties": {
+                "is_desired": {
+                    "type": "string"
+                },
+                "matched_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.SwipeResponse": {
+            "type": "object",
+            "properties": {
+                "matched": {
+                    "type": "boolean"
+                },
+                "matched_id": {
+                    "type": "integer"
+                }
             }
         }
     }

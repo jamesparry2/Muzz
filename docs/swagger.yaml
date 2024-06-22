@@ -8,6 +8,11 @@ definitions:
       message:
         type: string
     type: object
+  handler.APISwipeResponse:
+    properties:
+      result:
+        $ref: '#/definitions/handler.SwipeResponse'
+    type: object
   handler.CreateUserRequest:
     properties:
       email:
@@ -17,9 +22,56 @@ definitions:
     properties:
       result: {}
     type: object
+  handler.SwipeRequest:
+    properties:
+      is_desired:
+        type: string
+      matched_id:
+        type: integer
+    type: object
+  handler.SwipeResponse:
+    properties:
+      matched:
+        type: boolean
+      matched_id:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
+  /user/{id}/swipe:
+    post:
+      consumes:
+      - application/json
+      description: Allows for a user to perform a swipe action for another user and
+        determine if they want to match
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: matched_id is_desired
+        in: body
+        name: SwipeRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handler.SwipeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.APISwipeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.APIError'
   /user/create:
     post:
       consumes:
