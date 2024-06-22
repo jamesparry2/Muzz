@@ -9,7 +9,7 @@ import (
 
 var (
 	ErrCreateUserMissingRequest = errors.New("missing inbound request unable to create user")
-	ErrCreateUserUsernameInUser = errors.New("username provided is already in use")
+	ErrCreateUserUsernameInUser = errors.New("email provided is already in use")
 )
 
 type CreateUserRequest struct {
@@ -37,7 +37,10 @@ func (c *Client) CreateUser(ctx context.Context, request *CreateUserRequest) (*C
 	user := store.User{}
 	searchConditions := map[string]interface{}{"email": request.Email}
 	// We know if the record isn't found, thats not a terminal error case as in this flow we may not be registed
-	if err := c.store.FindUser(ctx, &user, searchConditions); err != nil && !errors.Is(err, store.ErrFindUserNotFound) {
+	if err := c.store.FindUser(ctx, &user, searchConditions); (err != nil && !errors.Is(err, store.ErrFindUserNotFound)) || user.ID > 0 {
+		if user.ID > 0 {
+			return nil, ErrCreateUserUsernameInUser
+		}
 		return nil, err
 	}
 

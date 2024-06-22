@@ -32,7 +32,7 @@ type User struct {
 	Name           string
 	Gender         string
 	Age            int
-	DistanceFromMe float64 `gorm:"-"`
+	DistanceFromMe float64 `gorm:"distance_from_me"`
 
 	Location    *Location
 	Preferences *Preferences
