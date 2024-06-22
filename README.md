@@ -26,5 +26,19 @@ For running the application the assumption, outline in the document, is the user
 	`docker tag muzz-api:latest muzz-api:local`
 	`docker-compose up -d`
 
-## Technical Design Decisions
-ToDo
+## Technical Design & Decisions
+
+### Project Structure
+
+### Database Decision and ORM
+
+For the database its been built against SQL primiarly to leverage the relational structure of the data that was being stored as the relationship can be mapped to one is many and vice vera such as a User can have many swipes but a swipe must belong to a single user.
+
+When deciding what DB Tool to use with this, it was decided to be MYSql to levearge the built in functionality that would support with the distancing query rather than trying to implement my own solution. The only drawback to useing the built in functionality is that, according to documentation, its not the most performant at scale but for this solution and use case it wouldn't be a problem.
+
+For the ORM in Go, I went with GORM because it allowed for the following features to be used:
+- automigration for the table strucures and allowed a model first appraoch
+- data parameterization to attempt to limit any potential SQL Injection
+- Quicker startup due to it ease of setup
+
+However there are some drawback, its automigration is a powerful tool but it only supports addiditve proccess so deletion and manual column changes are a challange.
