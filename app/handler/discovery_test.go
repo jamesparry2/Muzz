@@ -70,7 +70,7 @@ func TestDiscovery(t *testing.T) {
 				}}}, nil
 			},
 		}})
-		expectedBody := `{"results":[{"id":0,"name":"James","gender":"male","age":28}]}
+		expectedBody := `{"results":[{"id":0,"name":"James","gender":"male","age":28,"distance_from_me":0}]}
 `
 
 		if assert.NoError(t, client.Discovery(c), "unexpected error was returned") {
