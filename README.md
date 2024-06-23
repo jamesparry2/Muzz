@@ -4,6 +4,7 @@ The Muzz API is a miniature API that is designed to handle the management of use
 
 Below will be subsections denoting the requested functionality, the assumptions that were made that led to technical decisions and how the assumptions impacted the final endpoints. Also, will be some setup steps on how to run the API locally, for manual verification of the endpoints.
 
+To view the swagger documentation once the api is running, if you follow the URL: `http://localhost:5001/swagger/index.html` you will able to view each endpoint, the expected request and responses.
 
 ## Feature Requests
 - [x] Allow the ability to create users
