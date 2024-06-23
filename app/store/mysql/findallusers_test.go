@@ -6,9 +6,7 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/jamesparry2/Muzz/app/store"
-	customsql "github.com/jamesparry2/Muzz/app/store/mysql"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -100,21 +98,4 @@ func TestFindAllUsers(t *testing.T) {
 		assert.NoError(t, err, "no error should be returned")
 		assert.Len(t, users, 2, "unexpected amount of users returned")
 	})
-}
-
-func setupMockDB() (*customsql.Client, sqlmock.Sqlmock, error) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		return nil, mock, err
-	}
-
-	gormDB, err := gorm.Open(mysql.New(mysql.Config{
-		Conn:                      db,
-		SkipInitializeWithVersion: true,
-	}), &gorm.Config{})
-	if err != nil {
-		return nil, mock, err
-	}
-
-	return customsql.NewClient(gormDB), mock, nil
 }
