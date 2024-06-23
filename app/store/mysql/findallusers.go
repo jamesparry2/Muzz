@@ -42,7 +42,7 @@ func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.Us
 	}
 
 	if user.Location != nil {
-		query.InnerJoins("Location").Select("users.id, users.name, users.password, users.gender, users.age, ST_Distance_Sphere(point (?, ?), point(lat, `long`)) * .000621371192 as distance_from_me", user.Location.Lat, user.Location.Long).Order("distance_from_me DESC")
+		query.InnerJoins("Location").Select("users.id, users.name, users.password, users.gender, users.age, ST_Distance_Sphere(point (?, ?), point(lat, `long`)) * .000621371192 as distance_from_me", user.Location.Lat, user.Location.Long).Order("distance_from_me ASC")
 	}
 
 	result := query.Find(&users)

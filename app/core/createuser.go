@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"errors"
+	"math/rand"
 
 	"github.com/jamesparry2/Muzz/app/store"
 )
@@ -49,12 +50,21 @@ func (c *Client) CreateUser(ctx context.Context, request *CreateUserRequest) (*C
 		return nil, err
 	}
 
+	gender := map[int]string{
+		0: "male",
+		1: "female",
+	}
+
 	userToSave := &store.User{
 		Email:    request.Email,
 		Password: encryptedPassword,
 		Name:     request.Name,
-		Gender:   request.Gender,
-		Age:      request.Age,
+		Gender:   gender[rand.Intn(2)],
+		Age:      rand.Intn(100-18) + 18,
+		Location: &store.Location{
+			Lat:  float64(rand.Intn(91)),
+			Long: float64(rand.Intn(91)),
+		},
 	}
 	if err := c.store.UpsertUser(ctx, userToSave); err != nil {
 		return nil, err
