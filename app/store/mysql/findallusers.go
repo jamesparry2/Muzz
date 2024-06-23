@@ -46,7 +46,7 @@ func (c *Client) FindAllUsers(ctx context.Context, user *store.User) ([]store.Us
 	}
 
 	// Just need to map distance in
-	result := query.Debug().Find(&users)
+	result := query.Find(&users)
 	if result.Error != nil {
 		return users, result.Error
 	}
